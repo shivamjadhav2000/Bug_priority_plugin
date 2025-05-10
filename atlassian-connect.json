@@ -1,5 +1,5 @@
 {
-    "name": "Issue Labeler",
+    "name": "Bug Priority Helper",
     "description": "Issue classification tool. This tool helps to classify the issue based on the description and title of the issue. Uses Roberta Model for Text Classification.",
     "key": "predictool.app",
     "baseUrl": "https://bug-priority-plugin.onrender.com/",
