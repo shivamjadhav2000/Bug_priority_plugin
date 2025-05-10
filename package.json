@@ -1,0 +1,25 @@
+{
+  "name": "plugin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./Existing_IssueV3/existing_issue_BE.js",
+  "scripts": {
+    "start": "node ./Existing_IssueV3/existing_issue_BE.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "*",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "*",
+    "node": "^17.7.1",
+    "node-fetch": "^2.6.7",
+    "os": "*"
+  },
+  "engines": {
+    "node": "16.13.2",
+    "npm": "8.1.2"
+  }
+}
