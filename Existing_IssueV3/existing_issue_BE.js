@@ -19,7 +19,7 @@ app.use(allowCrossDomain);
 
 
 app.post("/installed", (req, res) => {
-  console.log("App installed");
+  console.log("✅ App installed payload:", req.body);
   res.sendStatus(204);
 });
 
@@ -33,8 +33,10 @@ app.get('/install', (req, res) => {
     res.json(json);
 });
 app.get('/atlassian-connect.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
     res.json(json);
 });
+
 //SERVE PLUGIN HTML
 app.get("/Existing_IssueV3", (req, res) => {
     res.sendFile(__dirname + "/existing_issue_FE.htm");
