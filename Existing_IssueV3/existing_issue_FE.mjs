@@ -16,7 +16,12 @@ function predict() {
             .then(body => {
                 const parsed = JSON.parse(body);
                 const issue_type = parsed.fields.issuetype.name;
-                const desc = parsed.fields.description.content[0].content[0].text;
+                let desc = "";
+                try {
+                    desc = parsed.fields.description?.content?.[0]?.content?.[0]?.text || "";
+                } catch (e) {
+                    console.warn("No description found or invalid structure.");
+                }                
                 const title = parsed.fields.summary;
 
                 const issueData = JSON.stringify({
