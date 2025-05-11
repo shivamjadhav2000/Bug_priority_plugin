@@ -1,46 +1,43 @@
 {
-  "name": "Bug Priority Helper",
-  "description": "Issue classification tool. Uses RoBERTa for text classification.",
-  "key": "bug-priority-helper",
-  "baseUrl": "https://bug-priority-plugin.onrender.com",
-  "vendor": {
-    "name": "Shivam Jadhav UNIVERSITY OF NORTH TEXAS",
-    "url": "https://unt.edu"
-  },
-  "authentication": {
-    "type": "jwt"
-  },
-  "apiVersion": 1,
-  "lifecycle": {
-    "installed": "/installed",
-    "uninstalled": "/uninstalled"
-  },
-  "modules": {
-    "jiraIssueContents": [
-      {
-        "icon": {
-          "width": 16,
-          "height": 16,
-          "url": "/app_icon"
-        },
-        "target": {
-          "type": "web_panel",
-          "url": "/Existing_IssueV3"
-        },
-        "tooltip": {
-          "value": "Check Label Accuracy"
-        },
-        "name": {
-          "value": "Label Accuracy"
-        },
-        "key": "classify-existing-issue",
-        "conditions": [
-          {
-            "condition": "user_is_logged_in"
-          }
+    "name": "Bug Priority Helper",
+    "description": "Issue classification tool. This tool helps to classify the issue based on the description and title of the issue. Uses Roberta Model for Text Classification.",
+    "key": "predictool.app",
+    "baseUrl": "https://bug-priority-plugin.onrender.com/",
+    "vendor": {
+        "name": "Shivam Jadhav UNIVERSITY OF NORTH TEXAS",
+        "url": "https://unt.edu"
+    },
+    "authentication": {
+        "type": "none"
+    },
+    "apiVersion": 1,
+    "modules": {
+        "jiraIssueContents": [
+            {
+                "icon": {
+                    "width": 16,
+                    "height": 16,
+                    "url": "https://bug-priority-plugin.onrender.com/app_icon"
+                },
+                "target": {
+                    "type": "web_panel",
+                    "url": "https://bug-priority-plugin.onrender.com/Existing_IssueV3"
+                },
+                "tooltip": {
+                    "value": "Check Label Accuracy"
+                },
+                "name": {
+                    "value": "Label Accuracy"
+                },
+                "key": "classify-existing-issue",
+                "conditions": [
+                    {
+                        "condition": "user_is_logged_in"
+                    }
+                ]
+            }
         ]
-      }
-    ]
-  },
-  "scopes": ["READ", "WRITE", "ADMIN"]
+    },
+    "scopes": ["READ", "WRITE", "ADMIN"]
 }
+

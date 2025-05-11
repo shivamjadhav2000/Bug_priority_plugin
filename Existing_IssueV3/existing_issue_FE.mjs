@@ -3,7 +3,7 @@ function init() {
 }
 
 var span_check = 0;
-const Baseurl = "https://a11-pri-plugin.onrender.com";
+const Baseurl = "https://bug-priority-plugin.onrender.com";
 /*SEND ISSUE DATA TO NODE.JS BACK-END AND RECEIVE PREDICTION THEN REFORMAT AND DISPLAY*/
 function predict() {
     AP.context.getContext(function (response) {

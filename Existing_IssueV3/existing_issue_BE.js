@@ -18,22 +18,9 @@ let allowCrossDomain = function (req, res, next) {
 app.use(allowCrossDomain);
 
 
-app.post("/installed", (req, res) => {
-  console.log("✅ App installed payload:", req.body);
-  res.sendStatus(204);
-});
-
-app.post("/uninstalled", (req, res) => {
-  console.log("App uninstalled");
-  res.sendStatus(204);
-});
 
 //SERVE ATLASSIAN-CONNECT.JSON
 app.get('/install', (req, res) => {
-    res.json(json);
-});
-app.get('/atlassian-connect.json', (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
     res.json(json);
 });
 
