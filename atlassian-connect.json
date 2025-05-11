@@ -1,7 +1,7 @@
 {
   "name": "Bug Priority Helper",
   "description": "Issue classification tool. Uses RoBERTa for text classification.",
-  "key": "predictool.app",
+  "key": "bug-priority-helper",
   "baseUrl": "https://bug-priority-plugin.onrender.com",
   "vendor": {
     "name": "Shivam Jadhav UNIVERSITY OF NORTH TEXAS",
@@ -11,13 +11,17 @@
     "type": "jwt"
   },
   "apiVersion": 1,
+  "lifecycle": {
+    "installed": "/installed",
+    "uninstalled": "/uninstalled"
+  },
   "modules": {
     "jiraIssueContents": [
       {
         "icon": {
           "width": 16,
           "height": 16,
-          "url": "https://bug-priority-plugin.onrender.com/app_icon"
+          "url": "/app_icon"
         },
         "target": {
           "type": "web_panel",
