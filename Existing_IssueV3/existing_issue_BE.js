@@ -60,12 +60,15 @@ app.post('/predict', (req, res) => {
     var total_issue_text = title + " " + desc;
     var parsed_issue_text = total_issue_text.replaceAll(/\s/g, '%20');
     var parsed_issue_text1 = parsed_issue_text.replaceAll('"', '');
-    fetch(`${process.env.BACKEND_URL}/predict?issue=${parsed_issue_text1}`, {
-        method: 'POST',
-        headers: {
+    fetch(`${process.env.BACKEND_URL}/predict`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
             'Accept': 'application/json'
-        }
+        },
+    body: JSON.stringify({ text: total_issue_text })
     })
+
         .then(response => response.json())  // Directly parse JSON
         .then(data => {
             var priorities=data['confidence_scores']
@@ -73,12 +76,14 @@ app.post('/predict', (req, res) => {
             // Determine highest priority
             var confidence = 0;
             var label = '';
-            for (const [key, value] of Object.entries(priorities)) {
-                if (value > confidence) {
-                    confidence = value;
+           for (const [key, value] of Object.entries(priorities)) {
+                let numericVal = parseFloat(value);
+                if (numericVal > confidence) {
+                    confidence = numericVal;
                     label = key;
                 }
             }
+
 
             // Create result object
             var results = {
@@ -90,8 +95,10 @@ app.post('/predict', (req, res) => {
             res.json(results);
         })
         .catch(error => {
-            console.log("PREDICT API ERROR: " + error);
+            console.error("PREDICT API ERROR: " + error);
+            res.status(500).json({ error: "Prediction service failed." });
         });
+
 
 })
 
