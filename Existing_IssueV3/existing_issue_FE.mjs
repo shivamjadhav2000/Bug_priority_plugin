@@ -6,91 +6,71 @@ var span_check = 0;
 const Baseurl = "https://bug-priority-plugin.onrender.com";
 /*SEND ISSUE DATA TO NODE.JS BACK-END AND RECEIVE PREDICTION THEN REFORMAT AND DISPLAY*/
 function predict() {
+    const Baseurl = "https://bug-priority-plugin.onrender.com";
+
     AP.context.getContext(function (response) {
-        var issue_key = response.jira.issue.key;
+        const issue_key = response.jira.issue.key;
 
         AP.request("/rest/api/3/issue/" + issue_key)
-            .then(data => {
-                return data.body;
-            })
+            .then(res => res.body)
             .then(body => {
-                var parsed_body = JSON.parse(body);
-                var issue_type = parsed_body.fields.issuetype.name;
-                var desc = parsed_body.fields.description.content[0].content[0].text;
-                var title = parsed_body.fields.summary;
+                const parsed = JSON.parse(body);
+                const issue_type = parsed.fields.issuetype.name;
+                const desc = parsed.fields.description.content[0].content[0].text;
+                const title = parsed.fields.summary;
 
-                let issue_data = JSON.stringify({
-                    "issue_type": issue_type,
-                    "desc": desc,
-                    "title": title
+                const issueData = JSON.stringify({
+                    issue_type,
+                    desc,
+                    title
                 });
 
-                let fetch_url = `${Baseurl}/predict`;
-                let settings = {
+                return fetch(`${Baseurl}/predict`, {
                     method: "POST",
-                    body: issue_data,
-                    mode: "cors",
+                    body: issueData,
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        "Access-Control-Allow-Origin": "*",
-                        "Access-Control-Allow-Methods": "GET,POST,OPTIONS,DELETE,PUT"
-                    }
-                };
-
-                fetch(fetch_url, settings).then(res => res.json()).then((json) => {
-                    var prediction = JSON.parse(JSON.stringify(json));
-                    var label = prediction.label;
-                    var confidence = prediction.confidence;
-                    var priorities = prediction.priorities;
-
-                    // Display results in a simple format
-                    var res_tab = document.getElementById("result");
-                    res_tab.innerHTML = `
-                        <tr><th> Label</th><td>${label}</td></tr>
-                        <tr><th> Confidence</th><td>${(confidence * 100).toFixed(2)}%</td></tr>
-                        
-                    `;
-                    Object.entries(priorities).forEach(([key, value]) => {
-                    res_tab.innerHTML += `
-                        <tr><th> ${key}</th><td>${(value * 100).toFixed(2)}%</td></tr>
-                    `;
-                    })
-                    
-                    // Display warning or success icon based on the label
-                    if (label === "Yes") {
-                        console.log("YES");
-                        document.getElementById("icon").src = `${Baseurl}/correct`;
-                    
-                        // Clear existing content before appending
-                        document.getElementById("icon-span").innerHTML = '';
-                        let span = document.createElement('span');
-                        span.id = 'right';
-                        span.textContent = 'The issue is identified as an Accessibility';
-                        document.getElementById("icon-span").appendChild(span);
-                    } else {
-                        document.getElementById("icon").src = `${Baseurl}/warning`;
-                    
-                        // Clear existing content before appending
-                        document.getElementById("icon-span").innerHTML = '';
-                        let span = document.createElement('span');
-                        span.id = 'wrong';
-                        span.textContent = 'The issue is not identified as an Accessibility.';
-                        document.getElementById("icon-span").appendChild(span);
-                    }
-                    
-
-                    var dummyText = "";
-                    return dummyText;
-                })
-                .then(() => {
-                    console.log("DONE");
-                    predict();
-                })
-                .catch(error => {
-                    console.log("PREDICT ERROR: " + error);
+                        'Accept': 'application/json'
+                    },
+                    mode: "cors"
                 });
             })
-            .catch(e => console.log("GET ISSUE ERROR: " + e));
+            .then(res => res.json())
+            .then(data => {
+                const { label, confidence, priorities } = data;
+
+                // Update result table
+                const table = document.getElementById("result");
+                table.innerHTML = `
+                    <tr><th>Predicted Label</th><td>${label}</td></tr>
+                    <tr><th>Confidence</th><td>${(confidence * 100).toFixed(2)}%</td></tr>
+                `;
+
+                Object.entries(priorities).forEach(([key, value]) => {
+                    const percent = (parseFloat(value) * 100).toFixed(2);
+                    table.innerHTML += `<tr><th>${key}</th><td>${percent}%</td></tr>`;
+                });
+
+                // Choose icon based on severity
+                const iconURL = (label === "Blocker" || label === "Critical")
+                    ? `${Baseurl}/warning`
+                    : `${Baseurl}/correct`;
+
+                // Update tooltip and icon
+                const iconSpan = document.getElementById("icon-span");
+                iconSpan.innerHTML = `
+                    <img id="icon" src="${iconURL}" />
+                    <span>
+                        <b>${label}</b> priority<br>
+                        Confidence: ${(confidence * 100).toFixed(2)}%
+                    </span>
+                `;
+            })
+            .catch(err => {
+                console.error("PREDICT ERROR:", err);
+                const table = document.getElementById("result");
+                table.innerHTML = `<tr><td colspan="2">Prediction failed. Please try again later.</td></tr>`;
+            });
     });
 }
+
