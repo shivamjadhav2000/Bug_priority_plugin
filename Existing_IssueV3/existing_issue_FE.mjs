@@ -47,14 +47,13 @@ function predict() {
                 // Update result table
                 const table = document.getElementById("result");
                 table.innerHTML = `
-                    <tr><th>Predicted Label</th><td>${label}</td></tr>
-                    <tr><th>Confidence</th><td>${(confidence * 100).toFixed(2)}%</td></tr>
+                    <tr><th>Bug Priority</th><td>${label}</td></tr>
                 `;
 
-                Object.entries(priorities).forEach(([key, value]) => {
-                    const percent = (parseFloat(value) * 100).toFixed(2);
-                    table.innerHTML += `<tr><th>${key}</th><td>${percent}%</td></tr>`;
-                });
+                // Object.entries(priorities).forEach(([key, value]) => {
+                //     const percent = (parseFloat(value) * 100).toFixed(2);
+                //     table.innerHTML += `<tr><th>${key}</th><td>${percent}%</td></tr>`;
+                // });
 
                 // Choose icon based on severity
                 const iconURL = (label === "Blocker" || label === "Critical")
@@ -67,9 +66,10 @@ function predict() {
                     <img id="icon" src="${iconURL}" />
                     <span>
                         <b>${label}</b> priority<br>
-                        Confidence: ${(confidence * 100).toFixed(2)}%
                     </span>
                 `;
+                // Confidence: ${(confidence * 100).toFixed(2)}%
+
             })
             .catch(err => {
                 console.error("PREDICT ERROR:", err);
