@@ -2,12 +2,9 @@ function init() {
     predict();
 }
 
-var span_check = 0;
 const Baseurl = "https://bug-priority-plugin.onrender.com";
-/*SEND ISSUE DATA TO NODE.JS BACK-END AND RECEIVE PREDICTION THEN REFORMAT AND DISPLAY*/
-function predict() {
-    const Baseurl = "https://bug-priority-plugin.onrender.com";
 
+function predict() {
     AP.context.getContext(function (response) {
         const issue_key = response.jira.issue.key;
 
@@ -21,7 +18,7 @@ function predict() {
                     desc = parsed.fields.description?.content?.[0]?.content?.[0]?.text || "";
                 } catch (e) {
                     console.warn("No description found or invalid structure.");
-                }                
+                }
                 const title = parsed.fields.summary;
 
                 const issueData = JSON.stringify({
@@ -43,39 +40,32 @@ function predict() {
             .then(res => res.json())
             .then(data => {
                 const { label, confidence, priorities } = data;
+                const resultDiv = document.getElementById("result");
 
-                // Update result table
-                const table = document.getElementById("result");
-                table.innerHTML = `
-                    <tr><th>Bug Priority</th><td>${label}</td></tr>
-                `;
+                // Clear previous
+                resultDiv.innerHTML = "";
 
-                // Object.entries(priorities).forEach(([key, value]) => {
-                //     const percent = (parseFloat(value) * 100).toFixed(2);
-                //     table.innerHTML += `<tr><th>${key}</th><td>${percent}%</td></tr>`;
-                // });
+                // Create priority card
+                const priorityBox = document.createElement("div");
+                priorityBox.className = `priority-box ${label}`;
+                priorityBox.textContent = `Bug Priority: ${label}`;
+                resultDiv.appendChild(priorityBox);
 
-                // Choose icon based on severity
+                // Update icon + tooltip
                 const iconURL = (label === "Blocker" || label === "Critical")
                     ? `${Baseurl}/warning`
                     : `${Baseurl}/correct`;
 
-                // Update tooltip and icon
-                const iconSpan = document.getElementById("icon-span");
-                iconSpan.innerHTML = `
-                    <img id="icon" src="${iconURL}" />
-                    <span>
-                        <b>${label}</b> priority<br>
-                    </span>
-                `;
-                // Confidence: ${(confidence * 100).toFixed(2)}%
+                const iconImg = document.getElementById("icon");
+                const tooltipText = document.querySelector("#icon-span span");
 
+                iconImg.src = iconURL;
+                tooltipText.innerHTML = `<strong>${label}</strong> priority detected`;
             })
             .catch(err => {
                 console.error("PREDICT ERROR:", err);
-                const table = document.getElementById("result");
-                table.innerHTML = `<tr><td colspan="2">Prediction failed. Please try again later.</td></tr>`;
+                const resultDiv = document.getElementById("result");
+                resultDiv.innerHTML = `<div class="priority-box Minor">Prediction failed. Please try again later.</div>`;
             });
     });
 }
-
