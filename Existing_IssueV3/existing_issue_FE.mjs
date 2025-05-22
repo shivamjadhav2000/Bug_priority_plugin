@@ -7,16 +7,16 @@ const Baseurl = "https://bug-priority-plugin.onrender.com";
 function getIconHTML(label) {
   switch (label) {
     case "Blocker":
-      return `<i class="fa-solid fa-fire" style="color: #bf2600;"></i>`;
+      return `<i class="fa-solid fa-fire"></i>`;
     case "Critical":
-      return `<i class="fa-solid fa-triangle-exclamation" style="color: #de350b;"></i>`;
+      return `<i class="fa-solid fa-triangle-exclamation"></i>`;
     case "Major":
-      return `<i class="fa-solid fa-circle-exclamation" style="color: #ffab00;"></i>`;
+      return `<i class="fa-solid fa-circle-exclamation"></i>`;
     case "Minor":
-      return `<i class="fa-solid fa-circle-info" style="color: #6554c0;"></i>`;
+      return `<i class="fa-solid fa-circle-info"></i>`;
     case "Trivial":
     default:
-      return `<i class="fa-solid fa-circle-question" style="color: #8993a4;"></i>`;
+      return `<i class="fa-solid fa-circle-question"></i>`;
   }
 }
 
@@ -49,23 +49,19 @@ function predict() {
       })
       .then(res => res.json())
       .then(data => {
-        const { label, confidence } = data;
+        const { label } = data;
         const resultDiv = document.getElementById("result");
         resultDiv.innerHTML = "";
 
         const box = document.createElement("div");
         box.className = `priority-box ${label}`;
-        box.innerHTML = `${getIconHTML(label)} Predicted Priority: ${label}`;
+        box.innerHTML = `${getIconHTML(label)} &nbsp; Predicted Priority: <strong>${label}</strong>`;
         resultDiv.appendChild(box);
-
-        // Tooltip
-        document.getElementById("icon-span").innerHTML = `Confidence: ${(confidence * 100).toFixed(1)}%`;
       })
       .catch(err => {
         console.error("PREDICT ERROR:", err);
         const resultDiv = document.getElementById("result");
         resultDiv.innerHTML = `<div class="priority-box Trivial"><i class="fa-solid fa-circle-question"></i> Prediction failed. Try again.</div>`;
-        document.getElementById("icon-span").innerHTML = ``;
       });
   });
 }
