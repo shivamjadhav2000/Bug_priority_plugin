@@ -3,7 +3,7 @@
   <script src="https://connect-cdn.atl-paas.net/all.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/@atlaskit/css-reset@2.0.0/dist/bundle.css" media="all">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://bug-priority-plugin.onrender.com/js"></script>
   <style>
     body {
@@ -11,6 +11,8 @@
       background-color: #f4f5f7;
       padding: 16px;
       margin: 0;
+      display: flex;
+      justify-content: center;
     }
 
     #predict {
@@ -18,8 +20,11 @@
       border: 1px solid #dfe1e6;
       border-radius: 4px;
       padding: 16px;
-      max-width: 100%;
+      width: 100%;
+      max-width: 420px; /* Prevents wide card */
       box-shadow: 0 1px 2px rgba(9, 30, 66, 0.1);
+      overflow: hidden;
+      box-sizing: border-box;
     }
 
     #result {
@@ -37,6 +42,7 @@
       font-weight: 600;
       font-size: 15px;
       border-left: 5px solid;
+      word-break: break-word;
     }
 
     .Blocker {
@@ -71,10 +77,11 @@
 
     .fa {
       font-size: 18px;
+      flex-shrink: 0;
     }
 
     #icon-span {
-      display: none; /* Hidden since confidence removed */
+      display: none; /* not needed anymore */
     }
   </style>
 </head>
