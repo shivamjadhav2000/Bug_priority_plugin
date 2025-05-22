@@ -24,10 +24,10 @@
                     "url": "https://bug-priority-plugin.onrender.com/Existing_IssueV3"
                 },
                 "tooltip": {
-                    "value": "Check Label Accuracy"
+                    "value": "Check Accessibility Bug Priority"
                 },
                 "name": {
-                    "value": "Label Accuracy"
+                    "value": "Accessibility Bug Priority"
                 },
                 "key": "classify-existing-issue",
                 "conditions": [
